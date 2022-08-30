@@ -1,6 +1,18 @@
 - name: US-8. As a user I want to be able to import a new VM image from HTTPS and SMB so that I can clone it later
   hosts: localhost
+  vars:
+    cloud_init_ssh_keys:
+      - 'ssh-ed25519 AAAAC3NzaC1lZDI... almost-valid-ssy-key'
+    cloud_init_password_hash:
+      # password is rootp
+      root: '$6$2NMUxRBiMjQg.iwJ$eyTXnMseF.N5a62F6rZnKJVGd72HPW6F.KGcq9oFNz7fvMzV5FOvYPkxf..hGxRChhS9CkICOdWSvV.Ldmq871'
+      # password is myuserp
+      myuser: '$6$.igLISmqzw4hTyS4$4zAx6zWl5FnD3s8YSmn/UOvo0QDg6GuHJcmiB7EYwnbDn9SgZxvmyDeWN4WY6LRFDdChExALqyGfiPHmK1w.j/'
   tasks:
+  - name: Show user-data
+    ansible.builtin.debug:
+      msg: user_data="{{ lookup('template', './cloud-init-user-data-example.yml.j2') }}"
+
   - name: Import VM from SMB with cloud_init data
     scale_computing.hypercore.vm_import:
       cluster_instance:
@@ -14,14 +26,8 @@
         username: example1
         password: badpass
       cloud_init:
-        user_data:
-          autoinstall:
-            - version: 1
-            - locale: en_US"
-        meta_data:
-          network:
-            version: 2
-            renderer: networkd
+        user_data: "{{ lookup('template', './cloud-init-user-data-example.yml.j2') }}"
+        meta_data: "{{ lookup('file', './cloud-init-meta-data-example.yml') }}"
     register: output
 
   - name: output the HTTP request results

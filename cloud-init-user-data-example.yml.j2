@@ -27,7 +27,7 @@ autoinstall:
                         addresses: ['192.168.122.1']
     ssh:
         install-server: true
-        authorized-keys: ['ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIE8SNzKoqj89P6Z9kiYEhgbDogY0Y7YXSS68W2B5b2u7 justin_cinkelj@jcnuc']
+        authorized-keys: {{ cloud_init_ssh_keys }}
         allow-pw: false
     user-data:
         hostname: mytestvm
@@ -36,13 +36,12 @@ autoinstall:
             -
                 name: myuser
                 # myuserp password
-                passwd: >-
-                    $6$.igLISmqzw4hTyS4$4zAx6zWl5FnD3s8YSmn/UOvo0QDg6GuHJcmiB7EYwnbDn9SgZxvmyDeWN4WY6LRFDdChExALqyGfiPHmK1w.j/
+                passwd: {{ cloud_init_password_hash.myuser }}
                 shell: /bin/bash
                 lock_passwd: false
                 primary_group: myuser
                 groups: 'adm, cdrom, sudo, dip, plugdev, netdev, lxd'
-                ssh_authorized_keys: ['ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIE8SNzKoqj89P6Z9kiYEhgbDogY0Y7YXSS68W2B5b2u7 justin_cinkelj@jcnuc']
+                ssh_authorized_keys: {{ cloud_init_ssh_keys }}
         ssh:
             disable_root: false
         write_files:
@@ -70,4 +69,5 @@ autoinstall:
     late-commands:
         # rootp password
         - sed -i 's|^root:\*:|root:\$6\$2NMUxRBiMjQg.iwJ\$eyTXnMseF.N5a62F6rZnKJVGd72HPW6F.KGcq9oFNz7fvMzV5FOvYPkxf..hGxRChhS9CkICOdWSvV.Ldmq871:|' /target/etc/shadow
+        - sed -i 's|^root:\*:|root:{{ cloud_init_password_hash.root | replace('$', '\$') }}:|' /target/etc/shadow
         - poweroff
