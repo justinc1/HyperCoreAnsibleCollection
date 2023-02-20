@@ -2,14 +2,14 @@
 name: Ansible test
 on:
   push:
-    paths:
-      - "meta/**"
-      - "plugins/**"
-      - "roles/**"
-      - "tests/**"
-      - "*requirements*"
-      - "*.py"
-      - "*ansible*"
+#    paths:
+#      - "meta/**"
+#      - "plugins/**"
+#      - "roles/**"
+#      - "tests/**"
+#      - "*requirements*"
+#      - "*.py"
+#      - "*ansible*"
   # pull_request:
   schedule:
     - cron: "0 6 * * *"
@@ -62,3 +62,35 @@ jobs:
           ansible-core-version: ${{ matrix.ansible }}
           target-python-version: ${{ matrix.python }}
           testing-type: units
+
+  integ-tmp:
+    name: integ-node_info
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - ansible: "stable-2.13"
+            python: "3.10"
+            test_target: node_info
+    runs-on: self-hosted2
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v3
+      - name: Create integration_config.yml
+        run: |
+          echo "${{ vars.CI_CONFIG_HC_IP50 }}" > tests/integration/integration_config.yml
+          cat tests/integration/integration_config.yml
+          echo "sc_password: ${{ secrets.CI_CONFIG_HC_IP50_SC_PASSWORD }}" >> tests/integration/integration_config.yml
+          echo "smb_password: ${{ secrets.CI_CONFIG_HC_IP50_SMB_PASSWORD }}" >> tests/integration/integration_config.yml
+          echo "sc_replication_dest_password: ${{ secrets.CI_CONFIG_HC_IP50_SC_REPLICATION_DEST_PASSWORD }}" >> tests/integration/integration_config.yml
+          ls -al tests/integration/integration_config.yml
+      - name: Perform integration testing with ansible-test
+        uses: ansible-community/ansible-test-gh-action@release/v1
+        with:
+          ansible-core-version: ${{ matrix.ansible }}
+          target-python-version: ${{ matrix.python }}
+          controller-python-version: ${{ matrix.python }}
+          testing-type: integration
+          target: ${{ matrix.test_target }}
+          test-deps: >-
+            community.crypto

@@ -6,6 +6,11 @@
     SC_TIMEOUT: "{{ sc_timeout }}"
 
   block:
+    - name: TEMP use community.crypto.get_certificate
+      community.crypto.get_certificate:
+        host: 10.5.11.50
+        port: 443
+
     - name: Retrieve info about the nodes
       scale_computing.hypercore.node_info:
       register: initial
