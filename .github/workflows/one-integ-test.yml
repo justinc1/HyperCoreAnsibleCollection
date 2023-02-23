@@ -20,12 +20,6 @@ jobs:
 #            test_target: node_info
     runs-on: self-hosted2
     steps:
-      - name: Fix old ownership
-        run: |
-          mkdir -p code
-          /bin/chown -R 1000:0 code
-          find code -type d -exec chmod g+rwx {} \;
-          find code -type f -exec chmod g+rw {} \;
       - name: Check out code
         uses: actions/checkout@v3
         with:
@@ -47,9 +41,6 @@ jobs:
           git add -f tests/integration/integration_config.yml
           git commit -m "Added integration_config.yml"
           echo "GIT_NEW_HEAD_SHA=$(git rev-parse HEAD)" >> $GITHUB_ENV
-          /bin/chown -R 1000:0 .
-          find . -type d -exec chmod g+rwx {} \;
-          find . -type f -exec chmod g+rw {} \;
       - name: Perform integration testing with ansible-test
         uses: ansible-community/ansible-test-gh-action@release/v1
         with:
@@ -59,13 +50,7 @@ jobs:
           target: ${{ inputs.test_target }}
           test-deps: >-
             community.crypto
-          pre-test-cmd: find  ls -al tests/integration
+          pre-test-cmd: ls -al tests/integration
           collection-src-directory: ./code
-      - name: Fix newly added files ownership
-        run: |
-          /bin/chown -R 1000:0 code
-          find code -type d -exec chmod g+rwx {} \;
-          find code -type f -exec chmod g+rw {} \;
-        if: ${{ failure() || success() || cancelled() }}
     # python: command not found
     # fix: apt-get install python-is-python3
