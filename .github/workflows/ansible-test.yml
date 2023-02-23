@@ -63,50 +63,7 @@ jobs:
           target-python-version: ${{ matrix.python }}
           testing-type: units
 
-  integ-tmp:
-    name: integ-node_info
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          - ansible: "stable-2.13"
-            python: "3.10"
-            test_target: node_info
-    runs-on: self-hosted2
-    steps:
-      - name: Check out code
-        uses: actions/checkout@v3
-        with:
-          path: code
-      - name: Create integration_config.yml
-        run: |
-          cd code
-          echo "${{ vars.CI_CONFIG_HC_IP50 }}" > tests/integration/integration_config.yml
-          cat tests/integration/integration_config.yml
-          echo "sc_password: ${{ secrets.CI_CONFIG_HC_IP50_SC_PASSWORD }}" >> tests/integration/integration_config.yml
-          echo "smb_password: ${{ secrets.CI_CONFIG_HC_IP50_SMB_PASSWORD }}" >> tests/integration/integration_config.yml
-          echo "sc_replication_dest_password: ${{ secrets.CI_CONFIG_HC_IP50_SC_REPLICATION_DEST_PASSWORD }}" >> tests/integration/integration_config.yml
-          ls -al tests/integration/integration_config.yml
-      - name: Commit integration_config.yml for ansible-test
-        run: |
-          cd code
-          git config user.name github-actions
-          git config user.email github-actions@github.com
-          git add -f tests/integration/integration_config.yml
-          git commit -m "Added integration_config.yml"
-          echo "GIT_NEW_HEAD_SHA=$(git rev-parse HEAD)" >> $GITHUB_ENV
-      - name: Perform integration testing with ansible-test
-        uses: ansible-community/ansible-test-gh-action@release/v1
-        with:
-          ansible-core-version: ${{ matrix.ansible }}
-          target-python-version: ${{ matrix.python }}
-          # controller-python-version: ${{ matrix.python }}
-          testing-type: integration
-          target: ${{ matrix.test_target }}
-          test-deps: >-
-            community.crypto
-          pre-test-cmd: ls -al tests/integration
-          # git-checkout-ref: ${{ env.GIT_NEW_HEAD_SHA }}
-          collection-src-directory: ./code
-    # python: command not found
-    # fix: apt-get install python-is-python3
+  call-one-integ-test:
+    uses: ./.github/workflows/one-integ-test.yml
+    with:
+      test_target: node_info
