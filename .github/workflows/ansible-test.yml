@@ -84,13 +84,24 @@ jobs:
           echo "smb_password: ${{ secrets.CI_CONFIG_HC_IP50_SMB_PASSWORD }}" >> tests/integration/integration_config.yml
           echo "sc_replication_dest_password: ${{ secrets.CI_CONFIG_HC_IP50_SC_REPLICATION_DEST_PASSWORD }}" >> tests/integration/integration_config.yml
           ls -al tests/integration/integration_config.yml
+      - name: Commit integration_config.yml for ansible-test
+        run: |
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git add -f tests/integration/integration_config.yml
+          git commit -m "Added integration_config.yml"
+          echo "GIT_NEW_HEAD_SHA=$(git rev-parse HEAD)" >> $GITHUB_ENV
       - name: Perform integration testing with ansible-test
         uses: ansible-community/ansible-test-gh-action@release/v1
         with:
           ansible-core-version: ${{ matrix.ansible }}
           target-python-version: ${{ matrix.python }}
-          controller-python-version: ${{ matrix.python }}
+          # controller-python-version: ${{ matrix.python }}
           testing-type: integration
           target: ${{ matrix.test_target }}
           test-deps: >-
             community.crypto
+          pre-test-cmd: ls -al tests/integration
+          git-checkout-ref: ${{ env.GIT_NEW_HEAD_SHA }}
+    # python: command not found
+    # fix: apt-get install python-is-python3
