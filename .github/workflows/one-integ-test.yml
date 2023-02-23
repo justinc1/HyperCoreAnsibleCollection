@@ -19,6 +19,9 @@ jobs:
 #            python: "3.10"
 #            test_target: node_info
     runs-on: self-hosted2
+    # ansible-test-gh-action runs in container, as root
+    # try to run everything in container, as root
+    container: ubuntu:20.04
     steps:
       - name: Check out code
         uses: actions/checkout@v3
@@ -35,6 +38,8 @@ jobs:
           ls -al tests/integration/integration_config.yml
       - name: Commit integration_config.yml for ansible-test
         run: |
+          apt update
+          apt install -y git
           cd code
           git config user.name github-actions
           git config user.email github-actions@github.com
