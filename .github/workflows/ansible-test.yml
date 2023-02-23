@@ -102,6 +102,7 @@ jobs:
           test-deps: >-
             community.crypto
           pre-test-cmd: ls -al tests/integration
-          git-checkout-ref: ${{ env.GIT_NEW_HEAD_SHA }}
+          # git-checkout-ref: ${{ env.GIT_NEW_HEAD_SHA }}
+          collection-src-directory: .
     # python: command not found
     # fix: apt-get install python-is-python3
