@@ -76,8 +76,11 @@ jobs:
     steps:
       - name: Check out code
         uses: actions/checkout@v3
+        with:
+          path: code
       - name: Create integration_config.yml
         run: |
+          cd code
           echo "${{ vars.CI_CONFIG_HC_IP50 }}" > tests/integration/integration_config.yml
           cat tests/integration/integration_config.yml
           echo "sc_password: ${{ secrets.CI_CONFIG_HC_IP50_SC_PASSWORD }}" >> tests/integration/integration_config.yml
@@ -86,6 +89,7 @@ jobs:
           ls -al tests/integration/integration_config.yml
       - name: Commit integration_config.yml for ansible-test
         run: |
+          cd code
           git config user.name github-actions
           git config user.email github-actions@github.com
           git add -f tests/integration/integration_config.yml
@@ -103,6 +107,6 @@ jobs:
             community.crypto
           pre-test-cmd: ls -al tests/integration
           # git-checkout-ref: ${{ env.GIT_NEW_HEAD_SHA }}
-          collection-src-directory: .
+          collection-src-directory: ./code
     # python: command not found
     # fix: apt-get install python-is-python3
