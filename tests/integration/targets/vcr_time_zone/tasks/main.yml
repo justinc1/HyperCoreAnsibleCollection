@@ -1,0 +1,59 @@
+---
+- environment:
+    SC_HOST: "{{ sc_host }}"
+    SC_USERNAME: "{{ sc_username }}"
+    SC_PASSWORD: "{{ sc_password }}"
+
+  vars:
+    time_zone_a: "Europe/Ljubljana"
+    time_zone_b: "Europe/Zagreb"
+    actual_uuid: "timezone_guid"
+
+  block:
+    # -------------------------------------------------------------
+    # prepare - cleanup
+    - name: Remove TimeZone object
+      scale_computing.hypercore.api:
+        action: delete
+        endpoint: /rest/v1/TimeZone/timezone_guid
+
+    # -------------------------------------------------------------
+    # test
+    - name: Create TimeZone object
+      scale_computing.hypercore.time_zone:
+        zone: "{{ time_zone_a }}"
+      register: result
+    - scale_computing.hypercore.time_zone_info:
+      register: info
+    - ansible.builtin.assert:
+        that:
+          - result.changed == True
+          - result.diff.before != result.diff.after
+          - info.record.time_zone == time_zone_a
+          - info.record.uuid == actual_uuid
+
+    # - name: Create TimeZone object - idempotence
+
+#    - name: Change time zone
+#      scale_computing.hypercore.time_zone:
+#        zone: "{{ time_zone_b }}"
+#      register: result
+#    - scale_computing.hypercore.time_zone_info:
+#      register: info
+#    - ansible.builtin.assert:
+#        that:
+#          - result.changed == True
+#          - result.diff.before != result.diff.after
+#          - info.record.time_zone == time_zone_b
+#          - info.record.uuid == actual_uuid
+
+    # - name: Change time zone - idempotence
+
+    # -------------------------------------------------------------
+    # cleanup/revert
+    - name: Revert TimeZone object
+      scale_computing.hypercore.api:
+        action: post
+        endpoint: /rest/v1/TimeZone
+        data:
+          timeZone: US/Eastern
