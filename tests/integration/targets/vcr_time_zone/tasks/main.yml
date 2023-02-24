@@ -1,8 +1,12 @@
 ---
+# pip install vcrpy
+# ansible-test integration --local vcr_time_zone -v
+# - is run in temp directory, cassete is deleted
 - environment:
     SC_HOST: "{{ sc_host }}"
     SC_USERNAME: "{{ sc_username }}"
     SC_PASSWORD: "{{ sc_password }}"
+    PYVCR_RECORD_MODE: all
 
   vars:
     time_zone_a: "Europe/Ljubljana"

@@ -8,6 +8,8 @@ from __future__ import absolute_import, division, print_function
 __metaclass__ = type
 
 import json
+import vcr
+import os
 
 from ansible.module_utils.urls import Request, basic_auth_header
 
@@ -96,14 +98,23 @@ class Client:
         ):  # If timeout from request is not specifically provided, take it from the Client.
             timeout = self.timeout
         try:
-            raw_resp = self._client.open(
-                method,
-                path,
-                data=data,
-                headers=headers,
-                validate_certs=False,
-                timeout=timeout,
+            record_mode = os.environ.get("PYVCR_RECORD_MODE", "all")
+            my_vcr = vcr.VCR(
+                serializer='yaml',
+                # cassette_library_dir='/tmp',
+                record_mode=record_mode,
+                match_on=['uri', 'method'],
             )
+
+            with my_vcr.use_cassette('/tmp/synopsis2.yaml') as cass:
+                raw_resp = self._client.open(
+                    method,
+                    path,
+                    data=data,
+                    headers=headers,
+                    validate_certs=False,
+                    timeout=timeout,
+                )
         except HTTPError as e:
             # Wrong username/password, or expired access token
             if e.code == 401:
