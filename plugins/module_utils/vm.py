@@ -43,6 +43,7 @@ FROM_HYPERCORE_TO_ANSIBLE_POWER_STATE = dict(
     SHUTDOWN="shutdown",
     CRASHED="crashed",
 )
+# INVERSE_FROM_HYPERCORE_TO_ANSIBLE_POWER_STATE = {v: k for k, v in FROM_HYPERCORE_TO_ANSIBLE_POWER_STATE.items()}
 
 # FROM_ANSIBLE_TO_HYPERCORE_ACTION_STATE in mapping between how states are stored in ansible and how
 # states are stored in hypercore. Used in update_vm_power_state.
@@ -50,7 +51,9 @@ FROM_ANSIBLE_TO_HYPERCORE_POWER_STATE = dict(
     start="START",
     shutdown="SHUTDOWN",
     stop="STOP",
-    rebot="REBOOT",
+    # TODO map also stopped -> "STOP", etc?
+    rebot="REBOOT",  # no need to deprecate this typo, the string was TODO deprecate this typo
+
     reset="RESET",
     started="START",
 )
@@ -370,6 +373,8 @@ class VM(PayloadMapper):
             raise errors.ScaleComputingError(
                 f"More than one VM matches requirement vm_name=={ansible_dict['vm_name']} or vm_name_new=={ansible_dict['vm_name_new']}"
             )
+        str(vm_old_name)
+        str(vm_new_name)  ##
         vm = vm_old_name or vm_new_name
         if must_exist and vm is None:
             raise errors.VMNotFound(
@@ -409,9 +414,8 @@ class VM(PayloadMapper):
             vm_dict["operatingSystem"] = self.operating_system
         # state attribute is used by HC3 only during VM create.
         if self.power_state:
-            vm_dict["state"] = FROM_ANSIBLE_TO_HYPERCORE_POWER_STATE.get(
-                self.power_state, "unknown-power-state-sorry"
-            )
+            # key "stopped"
+            vm_dict["state"] = FROM_ANSIBLE_TO_HYPERCORE_POWER_STATE[self.power_state]
         if self.machine_type:
             vm_dict["machineType"] = FROM_ANSIBLE_TO_HYPERCORE_MACHINE_TYPE[
                 self.machine_type

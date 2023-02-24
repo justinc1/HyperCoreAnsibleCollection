@@ -805,6 +805,66 @@ class TestVM:
         )
 
 
+class TestVM_helpers:
+    """
+    Test small VM helper methods here.
+    """
+
+    """
+    FROM_HYPERCORE_TO_ANSIBLE_POWER_STATE and FROM_ANSIBLE_TO_HYPERCORE_POWER_STATE
+    need to be "compatible".
+    __str__(vm) takes arbitrary VM, and tries to show its hypercore and ansible representation.
+    This result in calling:
+        vm = VM.from_hypercore(data_from_hypercore)
+        vm.to_ansible(), vm.to_hypercore()
+    """
+    @pytest.mark.parametrize(
+        # all possible hypercore power_state values
+        "hypercore_power_state",
+        [
+            ("RUNNING",),
+            ("BLOCKED",),
+            ("PAUSED",),
+            ("SHUTDOWN",),
+            ("SHUTOFF",),
+            ("CRASHED",),
+        ],
+    )
+    def test_str__from_hypercore(self, rest_client, mocker, hypercore_power_state):
+        hypercore_vm_dict = dict(
+            uuid="",
+            nodeUUID="412a3e85-8c21-4138-a36e-789eae3548a3",
+            name="VM-name",
+            tags="XLAB-test-tag1,XLAB-test-tag2",
+            description="desc",
+            mem=42,
+            state=hypercore_power_state,
+            numVCPU=2,
+            netDevs=[],
+            blockDevs=[],
+            bootDevices=[],
+            attachGuestToolsISO=False,
+            operatingSystem=None,
+            affinityStrategy={
+                "strictAffinity": False,
+                "preferredNodeUUID": "",
+                "backupNodeUUID": "",
+            },
+            snapshotScheduleUUID="9238175f-2d6a-489f-9157-fa6345719b3b",
+            machineType="scale-7.2",
+        )
+        mocker.patch(
+            "ansible_collections.scale_computing.hypercore.plugins.module_utils.vm.Node.get_node"
+        ).return_value = None
+
+        mocker.patch(
+            "ansible_collections.scale_computing.hypercore.plugins.module_utils.vm.SnapshotSchedule.get_snapshot_schedule"
+        ).return_value = None
+
+        vm = VM.from_hypercore(hypercore_vm_dict, rest_client)
+        str(vm)
+
+
 class TestNic:
     @classmethod
     def _get_test_vm(cls, rest_client, mocker):

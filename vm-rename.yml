@@ -1,0 +1,38 @@
+---
+- name: Show replication settings for a specific VM
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  vars:
+    vm_name: demo-vm
+    vm_name_a: "vm-rename-test-a"
+    vm_name_b: "vm-rename-test-b"
+
+  tasks:
+    - name: Rename VM {{ vm_name_a }} to {{ vm_name_b }} - idempotence
+      scale_computing.hypercore.vm:
+        vm_name: "{{ vm_name_a }}"
+        vm_name_new: "{{ vm_name_b }}"
+        state: present
+        # description: VM rename CI test
+        # tags:
+        #   - Xlab
+        #   - mytag1
+        #   - mytag2
+        memory: "{{ '512 MB' | human_to_bytes }}"
+        vcpu: 1
+        # attach_guest_tools_iso: false
+        power_state: stop
+        disks: []
+        nics: []
+        # boot_devices: []
+      register: vm_result
+
+    - name: Get info about VM {{ vm_name }}
+      scale_computing.hypercore.vm_info:
+        vm_name: "{{ vm_name }}"
+      register: vm_info_result
+
+    - name: Show the info about {{ vm_name }} VM
+      debug:
+        var: vm_info_result
