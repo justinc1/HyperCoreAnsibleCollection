@@ -1,18 +1,15 @@
 ---
 # pip install vcrpy
 # ansible-test integration --local vcr_time_zone -v
+# ansible-test integration --local vcr_time_zone -v
 # - is run in temp directory, cassete is deleted
 - environment:
     SC_HOST: "{{ sc_host }}"
     SC_USERNAME: "{{ sc_username }}"
     SC_PASSWORD: "{{ sc_password }}"
     # https://vcrpy.readthedocs.io/en/latest/usage.html#record-modes
-
-    # PYVCR_RECORD_MODE: all
-    # rm -f /tmp/synopsis2.yaml
-
-    # echo 0 > /tmp/ind
-    PYVCR_RECORD_MODE: none
+    PYVCR_RECORD_MODE: "all"
+    # PYVCR_RECORD_MODE: "none"
 
   vars:
     time_zone_a: "Europe/Ljubljana"
@@ -21,28 +18,76 @@
 
   block:
     # -------------------------------------------------------------
+    # prepare - pyvcr
+    - name: set var/fact pyvcr_record_mode A
+      ansible.builtin.shell: echo $PYVCR_RECORD_MODE
+      register: pyvcr_record_mode_result
+
+    - name: set var/fact pyvcr_record_mode B
+      ansible.builtin.set_fact:
+        pyvcr_record_mode: "{{ pyvcr_record_mode_result.stdout }}"
+
+    - name: echo 0 > /tmp/ind if PYVCR_RECORD_MODE==none
+      ansible.builtin.copy:
+        dest: /tmp/ind
+        content: "0"
+      when: pyvcr_record_mode == "none"
+
+    - name: rm /tmp/synopsis2.yaml if PYVCR_RECORD_MODE==all
+      ansible.builtin.file:
+        path: /tmp/synopsis2.yaml
+        state: absent
+      when: pyvcr_record_mode == "all"
+
+    # -------------------------------------------------------------
     # prepare - cleanup
-    - name: echo 0 > /tmp/ind
-      command: echo 0 > /tmp/ind
-    - name: Remove TimeZone object
-      scale_computing.hypercore.api:
-        action: delete
-        endpoint: /rest/v1/TimeZone/timezone_guid
+#    - name: Remove TimeZone object
+#      scale_computing.hypercore.api:
+#        action: delete
+#        endpoint: /rest/v1/TimeZone/timezone_guid
+
+#    - name: Set TimeZone time_zone_a
+#      scale_computing.hypercore.api:
+#        action: post
+#        endpoint: /rest/v1/TimeZone
+#        data:
+#          timeZone: "{{ time_zone_a }}"
 
     # -------------------------------------------------------------
     # test
-    - name: Create TimeZone object
-      scale_computing.hypercore.time_zone:
-        zone: "{{ time_zone_a }}"
-      register: result
-    - scale_computing.hypercore.time_zone_info:
-      register: info
+    - name: Get time_zone
+      scale_computing.hypercore.api:
+        action: get
+        endpoint: /rest/v1/TimeZone
+      register: time_zone_result
     - ansible.builtin.assert:
         that:
-          - result.changed == True
-          - result.diff.before != result.diff.after
-          - info.record.time_zone == time_zone_a
-          - info.record.uuid == actual_uuid
+          - time_zone_result.changed == False
+          - time_zone_result.record[0].timeZone == "US/Eastern"
+
+    - name: Get time_server
+      scale_computing.hypercore.api:
+        action: get
+        endpoint: /rest/v1/TimeSource
+      register: time_server_result
+    - ansible.builtin.assert:
+        that:
+          - time_server_result.changed == False
+          - time_server_result.record[0].host == "pool.ntp.org"
+
+    # This does TaskTag.wait() - sleep ~ 10 sec.
+#    - name: Create TimeZone object
+#      scale_computing.hypercore.time_zone:
+#        zone: "{{ time_zone_a }}"
+#      register: result
+#    - scale_computing.hypercore.time_zone_info:
+#      register: info
+#    - ansible.builtin.assert:
+#        that:
+#          - result.changed == True
+#          - result.diff.before != result.diff.after
+#          - info.record.time_zone == time_zone_a
+#          - info.record.uuid == actual_uuid
 
     # - name: Create TimeZone object - idempotence
 
@@ -63,9 +108,9 @@
 
     # -------------------------------------------------------------
     # cleanup/revert
-    - name: Revert TimeZone object
-      scale_computing.hypercore.api:
-        action: post
-        endpoint: /rest/v1/TimeZone
-        data:
-          timeZone: US/Eastern
+#    - name: Revert TimeZone object
+#      scale_computing.hypercore.api:
+#        action: post
+#        endpoint: /rest/v1/TimeZone
+#        data:
+#          timeZone: US/Eastern
