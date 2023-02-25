@@ -27,12 +27,7 @@
       ansible.builtin.set_fact:
         pyvcr_record_mode: "{{ pyvcr_record_mode_result.stdout }}"
 
-    - name: echo 0 > /tmp/ind if PYVCR_RECORD_MODE==none
-      ansible.builtin.copy:
-        dest: /tmp/ind
-        content: "0"
-      when: pyvcr_record_mode == "none"
-
+    # otherwise, new request are appended
     - name: rm /tmp/synopsis2.yaml if PYVCR_RECORD_MODE==all
       ansible.builtin.file:
         path: /tmp/synopsis2.yaml

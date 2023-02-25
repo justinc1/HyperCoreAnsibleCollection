@@ -107,25 +107,7 @@ class Client:
                 match_on=['uri', 'method'],
             )
 
-            cassette_orig = '/tmp/synopsis2.yaml'
-            cassette_tmp = '/tmp/synopsis2_tmp.yaml'
-            if record_mode == "none":
-                with open("/tmp/ind") as ff:
-                    interaction_ind = int(ff.read().strip())
-                with open(cassette_orig) as ff:
-                    data = yaml.safe_load(ff)
-                data2 = dict(
-                    version=data["version"],
-                    interactions=[data["interactions"][interaction_ind]]
-                )
-                with open(cassette_tmp, "wt") as ff:
-                    yaml.safe_dump(data2, ff)
-                with open("/tmp/ind", "wt") as ff:
-                    ff.write(str(interaction_ind+1))
-                cassette = cassette_tmp
-            else:
-                cassette = cassette_orig
-
+            cassette = '/tmp/synopsis2.yaml'
             with my_vcr.use_cassette(cassette) as cass:
                 raw_resp = self._client.open(
                     method,
