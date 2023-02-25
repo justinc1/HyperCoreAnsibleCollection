@@ -109,6 +109,11 @@ class Client:
 
             cassette = '/tmp/synopsis2.yaml'
             with my_vcr.use_cassette(cassette) as cass:
+                with open("/tmp/vcr.log", "at") as ff:
+                    from datetime import datetime
+                    ff.write(f"{datetime.now()} {method} {path}\n")
+                    # vcr replays first suitable response -
+                    # so we always get the unfinished TaskTag.
                 raw_resp = self._client.open(
                     method,
                     path,

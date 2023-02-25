@@ -1,0 +1,455 @@
+interactions:
+- request:
+    body: '{"timeZone":"Europe/Ljubljana"}'
+    headers:
+      Accept:
+      - application/json
+      Authorization:
+      - !!binary |
+        QmFzaWMgZUd4aFlqcDRiR0ZpTWpBeU1nPT0=
+      Connection:
+      - close
+      Content-Length:
+      - '31'
+      Content-Type:
+      - application/json
+      Host:
+      - 10.5.11.50
+      User-Agent:
+      - Python-urllib/3.10
+    method: POST
+    uri: https://10.5.11.50/rest/v1/TimeZone
+  response:
+    body:
+      string: '{"taskTag":"19155","createdUUID":"timezone_guid"}'
+    headers:
+      Access-Control-Allow-Origin:
+      - '*'
+      Connection:
+      - close
+      Content-Length:
+      - '49'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Sat, 25 Feb 2023 10:38:11 GMT
+      ETag:
+      - W/"31-2s9CEkrnJm861dkOZ2oMKmrWTzQ"
+      Server:
+      - nginx
+      Strict-Transport-Security:
+      - max-age=31536000
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Powered-By:
+      - Express
+      X-XSS-Protection:
+      - 1; mode=block
+      x-openapi-enforcer:
+      - controller
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Authorization:
+      - !!binary |
+        QmFzaWMgZUd4aFlqcDRiR0ZpTWpBeU1nPT0=
+      Connection:
+      - close
+      Host:
+      - 10.5.11.50
+      User-Agent:
+      - Python-urllib/3.10
+    method: GET
+    uri: https://10.5.11.50/rest/v1/TaskTag/19155
+  response:
+    body:
+      string: '[{"taskTag":"19155","progressPercent":0,"state":"RUNNING","formattedDescription":"TimeZone
+        Create","descriptionParameters":[],"formattedMessage":"","messageParameters":[],"objectUUID":"timezone_guid","created":1677321491,"modified":1677321491,"completed":0,"sessionID":"416ab3e4-ea78-4c48-8fce-e37c12844c5d","nodeUUIDs":["2dc4d286-69ae-49a0-9862-efaf0b942293","265f66ad-189b-4237-94d3-58d3e9b1abe0","34050092-28ad-47f9-b32e-401421c6e00d"]}]'
+    headers:
+      Access-Control-Allow-Origin:
+      - '*'
+      Connection:
+      - close
+      Content-Length:
+      - '440'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Sat, 25 Feb 2023 10:38:12 GMT
+      ETag:
+      - W/"1b8-3gnJcMC+zOYlLV40CXv8eXnCwUc"
+      Server:
+      - nginx
+      Strict-Transport-Security:
+      - max-age=31536000
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Powered-By:
+      - Express
+      X-XSS-Protection:
+      - 1; mode=block
+      x-openapi-enforcer:
+      - controller
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Authorization:
+      - !!binary |
+        QmFzaWMgZUd4aFlqcDRiR0ZpTWpBeU1nPT0=
+      Connection:
+      - close
+      Host:
+      - 10.5.11.50
+      User-Agent:
+      - Python-urllib/3.10
+    method: GET
+    uri: https://10.5.11.50/rest/v1/TaskTag/19155
+  response:
+    body:
+      string: '[{"taskTag":"19155","progressPercent":0,"state":"RUNNING","formattedDescription":"TimeZone
+        Create","descriptionParameters":[],"formattedMessage":"","messageParameters":[],"objectUUID":"timezone_guid","created":1677321491,"modified":1677321493,"completed":0,"sessionID":"416ab3e4-ea78-4c48-8fce-e37c12844c5d","nodeUUIDs":["2dc4d286-69ae-49a0-9862-efaf0b942293","265f66ad-189b-4237-94d3-58d3e9b1abe0","34050092-28ad-47f9-b32e-401421c6e00d"]}]'
+    headers:
+      Access-Control-Allow-Origin:
+      - '*'
+      Connection:
+      - close
+      Content-Length:
+      - '440'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Sat, 25 Feb 2023 10:38:13 GMT
+      ETag:
+      - W/"1b8-XmR7Ua2Yrcs7aVHziksfNHvnfQ8"
+      Server:
+      - nginx
+      Strict-Transport-Security:
+      - max-age=31536000
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Powered-By:
+      - Express
+      X-XSS-Protection:
+      - 1; mode=block
+      x-openapi-enforcer:
+      - controller
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Authorization:
+      - !!binary |
+        QmFzaWMgZUd4aFlqcDRiR0ZpTWpBeU1nPT0=
+      Connection:
+      - close
+      Host:
+      - 10.5.11.50
+      User-Agent:
+      - Python-urllib/3.10
+    method: GET
+    uri: https://10.5.11.50/rest/v1/TaskTag/19155
+  response:
+    body:
+      string: '[{"taskTag":"19155","progressPercent":0,"state":"RUNNING","formattedDescription":"TimeZone
+        Create","descriptionParameters":[],"formattedMessage":"","messageParameters":[],"objectUUID":"timezone_guid","created":1677321491,"modified":1677321493,"completed":0,"sessionID":"416ab3e4-ea78-4c48-8fce-e37c12844c5d","nodeUUIDs":["2dc4d286-69ae-49a0-9862-efaf0b942293","265f66ad-189b-4237-94d3-58d3e9b1abe0","34050092-28ad-47f9-b32e-401421c6e00d"]}]'
+    headers:
+      Access-Control-Allow-Origin:
+      - '*'
+      Connection:
+      - close
+      Content-Length:
+      - '440'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Sat, 25 Feb 2023 10:38:15 GMT
+      ETag:
+      - W/"1b8-XmR7Ua2Yrcs7aVHziksfNHvnfQ8"
+      Server:
+      - nginx
+      Strict-Transport-Security:
+      - max-age=31536000
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Powered-By:
+      - Express
+      X-XSS-Protection:
+      - 1; mode=block
+      x-openapi-enforcer:
+      - controller
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Authorization:
+      - !!binary |
+        QmFzaWMgZUd4aFlqcDRiR0ZpTWpBeU1nPT0=
+      Connection:
+      - close
+      Host:
+      - 10.5.11.50
+      User-Agent:
+      - Python-urllib/3.10
+    method: GET
+    uri: https://10.5.11.50/rest/v1/TaskTag/19155
+  response:
+    body:
+      string: '[{"taskTag":"19155","progressPercent":0,"state":"RUNNING","formattedDescription":"TimeZone
+        Create","descriptionParameters":[],"formattedMessage":"","messageParameters":[],"objectUUID":"timezone_guid","created":1677321491,"modified":1677321493,"completed":0,"sessionID":"416ab3e4-ea78-4c48-8fce-e37c12844c5d","nodeUUIDs":["2dc4d286-69ae-49a0-9862-efaf0b942293","265f66ad-189b-4237-94d3-58d3e9b1abe0","34050092-28ad-47f9-b32e-401421c6e00d"]}]'
+    headers:
+      Access-Control-Allow-Origin:
+      - '*'
+      Connection:
+      - close
+      Content-Length:
+      - '440'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Sat, 25 Feb 2023 10:38:17 GMT
+      ETag:
+      - W/"1b8-XmR7Ua2Yrcs7aVHziksfNHvnfQ8"
+      Server:
+      - nginx
+      Strict-Transport-Security:
+      - max-age=31536000
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Powered-By:
+      - Express
+      X-XSS-Protection:
+      - 1; mode=block
+      x-openapi-enforcer:
+      - controller
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Authorization:
+      - !!binary |
+        QmFzaWMgZUd4aFlqcDRiR0ZpTWpBeU1nPT0=
+      Connection:
+      - close
+      Host:
+      - 10.5.11.50
+      User-Agent:
+      - Python-urllib/3.10
+    method: GET
+    uri: https://10.5.11.50/rest/v1/TaskTag/19155
+  response:
+    body:
+      string: '[{"taskTag":"19155","progressPercent":66,"state":"RUNNING","formattedDescription":"TimeZone
+        Create","descriptionParameters":[],"formattedMessage":"","messageParameters":[],"objectUUID":"timezone_guid","created":1677321491,"modified":1677321499,"completed":0,"sessionID":"416ab3e4-ea78-4c48-8fce-e37c12844c5d","nodeUUIDs":["2dc4d286-69ae-49a0-9862-efaf0b942293","265f66ad-189b-4237-94d3-58d3e9b1abe0","34050092-28ad-47f9-b32e-401421c6e00d"]}]'
+    headers:
+      Access-Control-Allow-Origin:
+      - '*'
+      Connection:
+      - close
+      Content-Length:
+      - '441'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Sat, 25 Feb 2023 10:38:19 GMT
+      ETag:
+      - W/"1b9-/eGCop5lPjaiMnm2baG/wkFpxek"
+      Server:
+      - nginx
+      Strict-Transport-Security:
+      - max-age=31536000
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Powered-By:
+      - Express
+      X-XSS-Protection:
+      - 1; mode=block
+      x-openapi-enforcer:
+      - controller
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Authorization:
+      - !!binary |
+        QmFzaWMgZUd4aFlqcDRiR0ZpTWpBeU1nPT0=
+      Connection:
+      - close
+      Host:
+      - 10.5.11.50
+      User-Agent:
+      - Python-urllib/3.10
+    method: GET
+    uri: https://10.5.11.50/rest/v1/TaskTag/19155
+  response:
+    body:
+      string: '[{"taskTag":"19155","progressPercent":100,"state":"COMPLETE","formattedDescription":"TimeZone
+        Create","descriptionParameters":[],"formattedMessage":"","messageParameters":[],"objectUUID":"timezone_guid","created":1677321491,"modified":1677321499,"completed":1677321499,"sessionID":"416ab3e4-ea78-4c48-8fce-e37c12844c5d","nodeUUIDs":["2dc4d286-69ae-49a0-9862-efaf0b942293","265f66ad-189b-4237-94d3-58d3e9b1abe0","34050092-28ad-47f9-b32e-401421c6e00d"]}]'
+    headers:
+      Access-Control-Allow-Origin:
+      - '*'
+      Connection:
+      - close
+      Content-Length:
+      - '452'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Sat, 25 Feb 2023 10:38:20 GMT
+      ETag:
+      - W/"1c4-YfC8S0AlxqEdVHn0LS+NaPX2uvQ"
+      Server:
+      - nginx
+      Strict-Transport-Security:
+      - max-age=31536000
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Powered-By:
+      - Express
+      X-XSS-Protection:
+      - 1; mode=block
+      x-openapi-enforcer:
+      - controller
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Authorization:
+      - !!binary |
+        QmFzaWMgZUd4aFlqcDRiR0ZpTWpBeU1nPT0=
+      Connection:
+      - close
+      Host:
+      - 10.5.11.50
+      User-Agent:
+      - Python-urllib/3.10
+    method: GET
+    uri: https://10.5.11.50/rest/v1/TimeZone
+  response:
+    body:
+      string: '[{"uuid":"timezone_guid","timeZone":"Europe/Ljubljana","latestTaskTag":{"taskTag":"19155","progressPercent":100,"state":"COMPLETE","formattedDescription":"TimeZone
+        Create","descriptionParameters":[],"formattedMessage":"","messageParameters":[],"objectUUID":"timezone_guid","created":1677321491,"modified":1677321499,"completed":1677321499,"sessionID":"416ab3e4-ea78-4c48-8fce-e37c12844c5d","nodeUUIDs":["2dc4d286-69ae-49a0-9862-efaf0b942293","265f66ad-189b-4237-94d3-58d3e9b1abe0","34050092-28ad-47f9-b32e-401421c6e00d"]}}]'
+    headers:
+      Access-Control-Allow-Origin:
+      - '*'
+      Connection:
+      - close
+      Content-Length:
+      - '523'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Sat, 25 Feb 2023 10:38:22 GMT
+      ETag:
+      - W/"20b-wblc90Udk4EVbhQH6LaO+n/DHt0"
+      Server:
+      - nginx
+      Strict-Transport-Security:
+      - max-age=31536000
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Powered-By:
+      - Express
+      X-XSS-Protection:
+      - 1; mode=block
+      x-openapi-enforcer:
+      - controller
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Authorization:
+      - !!binary |
+        QmFzaWMgZUd4aFlqcDRiR0ZpTWpBeU1nPT0=
+      Connection:
+      - close
+      Host:
+      - 10.5.11.50
+      User-Agent:
+      - Python-urllib/3.10
+    method: GET
+    uri: https://10.5.11.50/rest/v1/TimeSource
+  response:
+    body:
+      string: '[{"uuid":"timesource_guid","host":"pool.ntp.org","latestTaskTag":{"taskTag":"18998","progressPercent":100,"state":"COMPLETE","formattedDescription":"TimeSource
+        Create","descriptionParameters":[],"formattedMessage":"","messageParameters":[],"objectUUID":"timesource_guid","created":1677306046,"modified":1677306056,"completed":1677306056,"sessionID":"9d3580e9-9dc1-4783-8c0d-aa09743f84e4","nodeUUIDs":["2dc4d286-69ae-49a0-9862-efaf0b942293","265f66ad-189b-4237-94d3-58d3e9b1abe0","34050092-28ad-47f9-b32e-401421c6e00d"]}}]'
+    headers:
+      Access-Control-Allow-Origin:
+      - '*'
+      Connection:
+      - close
+      Content-Length:
+      - '521'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Sat, 25 Feb 2023 10:38:23 GMT
+      ETag:
+      - W/"209-wtHKX03woDih5QqOqDezjl1TeVU"
+      Server:
+      - nginx
+      Strict-Transport-Security:
+      - max-age=31536000
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Powered-By:
+      - Express
+      X-XSS-Protection:
+      - 1; mode=block
+      x-openapi-enforcer:
+      - controller
+    status:
+      code: 200
+      message: OK
+version: 1

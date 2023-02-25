@@ -8,8 +8,8 @@
     SC_USERNAME: "{{ sc_username }}"
     SC_PASSWORD: "{{ sc_password }}"
     # https://vcrpy.readthedocs.io/en/latest/usage.html#record-modes
-    PYVCR_RECORD_MODE: "all"
-#    PYVCR_RECORD_MODE: "none"
+#    PYVCR_RECORD_MODE: "all"
+    PYVCR_RECORD_MODE: "none"
 
   vars:
     time_zone_a: "Europe/Ljubljana"
