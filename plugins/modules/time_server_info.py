@@ -80,6 +80,7 @@ from ..module_utils import errors, arguments
 from ..module_utils.client import Client
 from ..module_utils.rest_client import RestClient
 from ..module_utils.time_server import TimeServer
+from ..module_utils.vcr import main_with_vcr
 
 
 def run(rest_client: RestClient):
@@ -104,4 +105,4 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    main_with_vcr(main)

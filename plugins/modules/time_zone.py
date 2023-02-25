@@ -77,6 +77,8 @@ from ..module_utils import arguments, errors
 from ..module_utils.client import Client
 from ..module_utils.rest_client import RestClient
 from ..module_utils.time_zone import TimeZone
+from ..module_utils.vcr import main_with_vcr
+
 
 SUPPORTED_ZONES = [
     "Africa/Abidjan",
@@ -589,4 +591,4 @@ def main() -> None:
 
 
 if __name__ == "__main__":
-    main()
+    main_with_vcr(main)
