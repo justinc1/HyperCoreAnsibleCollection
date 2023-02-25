@@ -1,15 +1,21 @@
 ---
 # pip install vcrpy
+# pip install git+https://github.com/justinc1/vcr-stub-server@sequential-replay  # pip install vcr-stub-server
 # ansible-test integration --local vcr_time_zone -v
 # ansible-test integration --local vcr_time_zone -v
 # - is run in temp directory, cassete is deleted
 - environment:
-    SC_HOST: "{{ sc_host }}"
+    # SC_HOST: "{{ sc_host }}"
     SC_USERNAME: "{{ sc_username }}"
     SC_PASSWORD: "{{ sc_password }}"
     # https://vcrpy.readthedocs.io/en/latest/usage.html#record-modes
+
+#    SC_HOST: "https://10.5.11.50"
 #    PYVCR_RECORD_MODE: "all"
-    PYVCR_RECORD_MODE: "none"  #
+
+    SC_HOST: "http://127.0.0.2:8080"
+    PYVCR_RECORD_MODE: "none"
+    # vcr-stub-server path/to/vcr_cassette.yml
 
   vars:
     time_zone_a: "Europe/Ljubljana"
@@ -33,6 +39,18 @@
         path: /tmp/synopsis2.yaml
         state: absent
       when: pyvcr_record_mode == "all"
+
+    - name: Start vcr-stub-server
+      # sed -i /tmp/synopsis2.yaml -e 's|https://10.5.11.50/|http://127.0.0.2:8080/|' -e 's|10.5.11.50|127.0.0.2|'
+      # ansible.builtin.command: vcr-stub-server /tmp/synopsis2.yaml
+      # ansible.builtin.shell: sudo ip a add dev lo 10.5.11.50/32; sudo echo {{ ansible_python_interpreter | dirname  }}/vcr-stub-server -b 10.5.11.50/32 -p 80 /tmp/synopsis2.yaml
+      ansible.builtin.shell: |
+        sed -i /tmp/synopsis2.yaml -e 's|https://10.5.11.50/|http://127.0.0.2:8080/|' -e 's|10.5.11.50|127.0.0.2|' ;
+        {{ ansible_python_interpreter | dirname  }}/vcr-stub-server -b 127.0.0.2 -p 8080 /tmp/synopsis2.yaml ;
+      async: 300
+      poll: 0
+      register: vcr_server_result
+      when: pyvcr_record_mode == "none"
 
     # -------------------------------------------------------------
     # prepare - cleanup
@@ -68,8 +86,10 @@
       scale_computing.hypercore.time_zone:
         zone: "{{ time_zone_a }}"
       register: result
+      # on replay: changed: [testhost] => {"changed": true, "record": {}}
     - scale_computing.hypercore.time_zone_info:
       register: info
+    # replay+assert fails here. fork of vcr-stub-server needed.
     - ansible.builtin.assert:
         that:
           - result.changed == True
@@ -102,3 +122,7 @@
         endpoint: /rest/v1/TimeZone
         data:
           timeZone: US/Eastern
+
+    - name: Stop vcr-stub-server
+      ansible.builtin.shell: killall vcr-stub-server
+      when: pyvcr_record_mode == "none"

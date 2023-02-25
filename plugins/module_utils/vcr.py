@@ -11,6 +11,9 @@ def main_with_vcr(main: callable, *args, **kwargs):
     record_mode = os.environ.get("PYVCR_RECORD_MODE")
     if not record_mode:
         return main(*args, **kwargs)
+    if record_mode == 'none':
+        # via vcr-stub-server
+        return main(*args, **kwargs)
 
     my_vcr = vcr.VCR(
         serializer='yaml',

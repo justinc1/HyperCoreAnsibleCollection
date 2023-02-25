@@ -96,6 +96,9 @@ class Client:
         ):  # If timeout from request is not specifically provided, take it from the Client.
             timeout = self.timeout
         try:
+            with open("/tmp/request.log", "at") as ff:
+                from datetime import datetime
+                ff.write(f"{datetime.now()} {method} {path}\n")
             raw_resp = self._client.open(
                 method,
                 path,
