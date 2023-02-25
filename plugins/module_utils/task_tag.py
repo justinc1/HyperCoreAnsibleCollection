@@ -13,6 +13,7 @@ from time import sleep
 from ..module_utils import errors
 from ..module_utils.rest_client import RestClient
 from ..module_utils.typed_classes import TypedTaskTag
+from ..module_utils.vcr import vcr_enabled
 
 
 class TaskTag:
@@ -47,7 +48,8 @@ class TaskTag:
                 "QUEUED",
             ):  # TaskTag has finished
                 break
-            sleep(1)
+            sleep_delay = 0 if vcr_enabled() else 1
+            sleep(sleep_delay)
 
     @staticmethod
     def get_task_status(rest_client, task):

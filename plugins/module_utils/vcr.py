@@ -22,3 +22,8 @@ def main_with_vcr(main: callable, *args, **kwargs):
     cassette = '/tmp/synopsis2.yaml'
     with my_vcr.use_cassette(cassette) as cass:
         return main(*args, **kwargs)
+
+
+def vcr_enabled():
+    record_mode = os.environ.get("PYVCR_RECORD_MODE")
+    return bool(record_mode)
