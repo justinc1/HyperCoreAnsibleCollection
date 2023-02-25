@@ -4,6 +4,20 @@
 # ansible-test integration --local vcr_time_zone -v
 # ansible-test integration --local vcr_time_zone -v
 # - is run in temp directory, cassete is deleted
+
+# Cassette naming, based on integration  test name.
+# Nice to have - annotate cassette with module entry/leave - main() adds extra comment to yaml.
+# This is for integration tests.
+# - it is hard to bring system into initial state.
+# - VM endpoint will return all VMs - a lot of garbage for us.
+# yaml viewer, yq cmd to filter what is not needed
+# - cat /tmp/synopsis2.yaml | yq '[.interactions[] | {"method":.request.method, "uri":.request.uri, "body":.response.body, "status":.response.status} ]'
+
+# units test - a different story
+# You cannot force system to contain VM with predefined UUID.
+# - refactor unit test to create test VM, get test VM, then you know the UUID.
+# - those unit test are not unit test
+
 - environment:
     # SC_HOST: "{{ sc_host }}"
     SC_USERNAME: "{{ sc_username }}"
