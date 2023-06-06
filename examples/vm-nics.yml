@@ -1,0 +1,68 @@
+---
+- name: Create VM
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  vars:
+    vm_name: justin-vm-0
+
+  tasks:
+    - name: Remove VM {{ vm_name }}
+      scale_computing.hypercore.vm:
+        vm_name: "{{ vm_name }}"
+        state: absent
+        shutdown_timeout: 1
+        force_reboot: true
+      when: 1
+
+    - name: Create VM {{ vm_name }}
+      scale_computing.hypercore.vm:
+        vm_name: "{{ vm_name }}"
+        memory: "{{ '1 GB' | human_to_bytes }}"
+        vcpu: 2
+        disks: []
+
+        # main - a215 , a213 , a29 ,
+        # ansi215 - a215 , a213 , a29 ,
+        nics:
+
+        state: present
+        power_state: shutdown
+      register: vm_result
+      when: 1
+
+    - name: Add NIC to VM {{ vm_name }}
+      scale_computing.hypercore.vm_nic:
+        vm_name: "{{ vm_name }}"
+        items:
+          - type: virtio
+            vlan: 0
+        state: present
+
+    - name: Update VM {{ vm_name }}
+      scale_computing.hypercore.vm:
+        vm_name: "{{ vm_name }}"
+        memory: "{{ '1 GB' | human_to_bytes }}"
+        vcpu: 2
+        disks: []
+
+        # main - a215 fails1, a213 , a29 fails2,
+        # ansi215 - a215 fails1, a213 , a29 fails2,
+        #   fails1 - "state is present but all of the following are missing: nics"
+        #   fails2 - "'NoneType' object is not iterable"
+
+        # main - a215 fails3, a213 , a29 fails2,
+        # ansi215 - a215 fails3, a213 , a29 fails2,
+        #   fails3 - "Missing value - items, cannot be null, empty must be set to []"
+#        nics:
+
+        # all nics should be removed.
+        # main - a215 ok, a213 , a29 ok,
+        # ansi215 - a215 ok, a213 , a29 ok,
+        nics: []
+
+        state: present
+
+    - name: Show the info about VM {{ vm_name }}
+      scale_computing.hypercore.vm_info:
+        vm_name: "{{ vm_name }}"

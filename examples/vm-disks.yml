@@ -1,0 +1,84 @@
+---
+- name: Create VM
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  vars:
+    vm_name: justin-vm-0
+
+  tasks:
+    - name: Remove VM {{ vm_name }}
+      scale_computing.hypercore.vm:
+        vm_name: "{{ vm_name }}"
+        state: absent
+        shutdown_timeout: 1
+        force_reboot: true
+      when: 1
+
+    - name: Create VM {{ vm_name }}
+      scale_computing.hypercore.vm:
+        vm_name: "{{ vm_name }}"
+        memory: "{{ '1 GB' | human_to_bytes }}"
+        vcpu: 2
+
+        # main - a215 , a213 , a29 ,
+        # ansi215 - a215 , a213 , a29 ,
+        disks:
+
+#        disks:
+#          - type: ide_cdrom
+#            disk_slot: 0
+#            iso_name: "Porteus-XFCE-v5.0-x86_64.iso"  # "TinyCore-current.iso"
+
+        nics: []
+        state: present
+        power_state: shutdown
+      register: vm_result
+      when: 1
+
+    # main - a215 fails, a213 , a29 ,
+    # ansi215 - a215 fails , a213 , a29 ,
+    - name: Add ISO disk to VM {{ vm_name }}
+      scale_computing.hypercore.vm_disk:
+        vm_name: "{{ vm_name }}"
+        items:
+          - type: ide_cdrom
+            disk_slot: 0
+            iso_name: "Porteus-XFCE-v5.0-x86_64.iso"  # "TinyCore-current.iso"
+        state: present
+      when: 0
+
+    - name: Add virtio disk to VM {{ vm_name }}
+      scale_computing.hypercore.vm_disk:
+        vm_name: "{{ vm_name }}"
+        items:
+          - type: virtio_disk
+            disk_slot: 0
+            size: "{{ '1 GB' | human_to_bytes }}"
+        state: present
+
+    - name: Update VM {{ vm_name }}
+      scale_computing.hypercore.vm:
+        vm_name: "{{ vm_name }}"
+        memory: "{{ '1 GB' | human_to_bytes }}"
+        vcpu: 2
+
+        # main - a215 fails, a213 , a29 ,
+        # ansi215 - a215 ? , a213 , a29 ,
+        # no disks at all - but it is required if state=present
+
+        # main - a215 fails None is not iterable, a213 , a29 fails,
+        # ansi215 - a215 fails, a213 , a29 fails,
+        disks:
+
+        # all disk should be removed.
+        # main - a215 ok, a213 , a29 ok,
+        # ansi215 - a215 ok, a213 , a29 ok,
+#        disks: []
+
+        nics: []
+        state: present
+
+    - name: Show the info about VM {{ vm_name }}
+      scale_computing.hypercore.vm_info:
+        vm_name: "{{ vm_name }}"
