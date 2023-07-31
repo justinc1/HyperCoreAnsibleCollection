@@ -10,6 +10,20 @@
     desired_version: 9.2.17.211525
 
   tasks:
+    - name: Update HyperCore single-node system to a desired version
+      ansible.builtin.include_role:
+        name: scale_computing.hypercore.version_update_single_node
+        tasks_from: shutdown_vms.yml
+      vars:
+        version_update_single_node_desired_version: "{{ desired_version }}"
+        # version_update_single_node_shutdown_wait_time: 310
+        version_update_single_node_shutdown_vms:  # mockup data
+          records:
+            - power_state: started
+              uuid: vm_uuid_0
+              vm_name: vm_name_0
+
+
     - name: Show desired_version
       ansible.builtin.debug:
         msg: Desired HyperCore version for host {{ lookup('ansible.builtin.env', 'SC_HOST') }} is {{ desired_version }}.
