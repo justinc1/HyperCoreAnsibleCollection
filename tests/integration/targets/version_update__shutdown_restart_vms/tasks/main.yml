@@ -6,6 +6,10 @@
 #   ci_live_migrate__yes_c - has ACPI shutdown
 # Test VMs are not removed. They are left present, hopefully this will speedup testing.
 
+# https://github.com/ScaleComputing/HyperCoreAnsibleCollection/actions/runs/6347832281/job/17243451178#step:8:4124
+# https://github.com/ScaleComputing/HyperCoreAnsibleCollection/actions/runs/6347832281/job/17243451178#step:8:3454
+# The 2nd VM was vm-integration-test-boot_device, and got removed before shutdown test finished.
+
 - environment:
     SC_HOST: "{{ sc_host }}"
     SC_USERNAME: "{{ sc_config[sc_host].sc_username }}"
