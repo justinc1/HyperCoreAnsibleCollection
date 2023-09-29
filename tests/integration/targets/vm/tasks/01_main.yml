@@ -132,6 +132,7 @@
     # VM needs to be rebooted.
     # A running OS will accept ACPI signal.
     # Otherwise, module waits a long time, then a force reboot happens.
+    # TODO https://github.com/ScaleComputing/HyperCoreAnsibleCollection/actions/runs/6347832281/job/17243448859
     - name: Update the VM
       scale_computing.hypercore.vm: &update-vm
         vm_name: vm-integration-test-vm

@@ -133,6 +133,8 @@
           - vm_created.records.0.power_state == "started"
 
 # ----------------------------------Job-------------------------------------------------------------------------------------
+    # TODO https://github.com/ScaleComputing/HyperCoreAnsibleCollection/actions/runs/6347832281/job/17243446375
+    # TODO https://github.com/ScaleComputing/HyperCoreAnsibleCollection/actions/runs/6347832281/job/17243446941
     - name: Force reboot the VM
       scale_computing.hypercore.vm: &update-vm
         vm_name: "{{ vm_name }}"
