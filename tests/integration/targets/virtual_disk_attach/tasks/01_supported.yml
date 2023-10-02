@@ -93,6 +93,8 @@
       read_only: true
       regenerate_disk_id: false
   register: disk
+  environment:
+    SC_DEBUG_LOG_TRAFFIC: 1
 - ansible.builtin.assert:
     that:
       - disk is succeeded
