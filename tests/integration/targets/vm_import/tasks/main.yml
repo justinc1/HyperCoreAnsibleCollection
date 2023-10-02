@@ -86,6 +86,7 @@
           - output is changed
           - output.msg == "Virtual machine - XLAB-import-test-integration - export complete."
 
+# fails on 9.3 https://github.com/ScaleComputing/HyperCoreAnsibleCollection/actions/runs/6349507160/job/17306530379#step:8:64
     - name: Import XLAB-import-test-integration from SMB
       scale_computing.hypercore.vm_import:
         vm_name: XLAB-import-test-integration-imported
