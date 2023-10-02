@@ -116,3 +116,24 @@
       - vm_created.record.0.power_state == "started"
       - vm_created.record.0.boot_devices | length == 1
       - vm_created.record.0.boot_devices.0.type == "ide_cdrom"
+
+- name: Create test VM d
+  scale_computing.hypercore.vm:
+    vm_name: "{{ vm_name_d }}"
+    description: "{{ vm_name_d }}"
+    state: present
+    tags:
+      - Xlab
+      - ci_live_migrate__no_d_deleted
+    memory: "{{ '512 MB' | human_to_bytes }}"
+    vcpu: 2
+    attach_guest_tools_iso: false
+    power_state: start
+    disks: []
+    nics: []
+    boot_devices: []
+    machine_type: BIOS
+  register: vm_created
+- ansible.builtin.assert:
+    that:
+      - vm_created.record.0.power_state == "started"

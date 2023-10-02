@@ -51,7 +51,12 @@
       ansible.builtin.set_fact:
         version_update_single_node_all_vms_stopped: false
       when:
-        - (version_update_single_node_vms.records | selectattr("vm_name", "equalto", item.vm_name) | list).0.power_state not in ['stopped', 'crashed']
+        # default("stopped") is in case VM was removed during execution
+        - >-
+          (version_update_single_node_vms.records | selectattr("vm_name", "equalto", item.vm_name) | list)
+          .0.power_state
+          | default("stopped")
+          not in ['stopped', 'crashed']
         - (version_update_single_node_shutdown_tags == []) or (version_update_single_node_shutdown_tags | intersect(item.tags))
       loop: "{{ version_update_single_node_shutdown_vms.records }}"
       register: version_update_single_node_vm_shutdown_result

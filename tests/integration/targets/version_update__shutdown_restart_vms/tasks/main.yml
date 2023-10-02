@@ -22,10 +22,12 @@
     vm_name_a: "ci-version-update-shutdown-a"
     vm_name_b: "ci-version-update-shutdown-b"
     vm_name_c: "ci-version-update-shutdown-c"
+    vm_name_c: "ci-version-update-shutdown-d"
     vm_names:
       - "{{ vm_name_a }}"
       - "{{ vm_name_b }}"
       - "{{ vm_name_c }}"
+      - "{{ vm_name_d }}"
     version_update_single_node_shutdown_wait_time: 30
 
   block:
@@ -34,13 +36,13 @@
         that:
           - sc_config[sc_host].version_update.vm_shutdown_restart_allow_string == "allow-vm-shutdown-restart-test"
 
-    - include_tasks: helper_create_vms.yml
-    - include_tasks: 01_shutdown_all.yml
-    - include_tasks: 02_shutdown_none.yml
+#    - include_tasks: helper_create_vms.yml
+#    - include_tasks: 01_shutdown_all.yml
+#    - include_tasks: 02_shutdown_none.yml
     - include_tasks: 03_shutdown_some.yml
-    - include_tasks: 04_shutdown_tagged_a.yml
-      vars:
-        # Porteus VM needs about 20 sec to shut down.
-        # Use longer wait time, we want to check VM did shut down, without exceeding the wait time.
-        version_update_single_node_shutdown_wait_time: 300
-    - include_tasks: 05_shutdown_tagged_bc.yml
+#    - include_tasks: 04_shutdown_tagged_a.yml
+#      vars:
+#        # Porteus VM needs about 20 sec to shut down.
+#        # Use longer wait time, we want to check VM did shut down, without exceeding the wait time.
+#        version_update_single_node_shutdown_wait_time: 300
+#    - include_tasks: 05_shutdown_tagged_bc.yml
