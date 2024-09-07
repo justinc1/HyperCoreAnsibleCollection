@@ -1,4 +1,4 @@
-.. scale_computing.hypercore.deprecation:
+.. _scale_computing.hypercore.deprecation::
 
 *****************
 Deprecation Notes
