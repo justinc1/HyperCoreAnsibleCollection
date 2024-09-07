@@ -8,6 +8,7 @@ on:
     branches:
       - main
       - stable-*
+      - docs-build-fix
     tags:
       - "*"
   schedule:
@@ -20,6 +21,8 @@ jobs:
     name: Build Ansible Docs
     uses: ansible-community/github-docs-build/.github/workflows/_shared-docs-build-push.yml@main
     with:
+      collection-name: scale_computing.hypercore
+      # squash-hierarchy: true
       init-lenient: false
       init-fail-on-error: true
       intersphinx-links: |
