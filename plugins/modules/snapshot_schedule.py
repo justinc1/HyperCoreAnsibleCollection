@@ -79,7 +79,7 @@ notes:
     The change will happen with release 3.0.0.
     To ease migration, the only change between last 1.x or 2.x release and 3.0.0 release
     will be changing the C(record) return value.
-    R(List of deprecation changes, scale_computing.hypercore.deprecation)
+    R List of deprecation changes, scale_computing.hypercore.deprecation
     includes examples to help with transition.
   - C(check_mode) is not supported.
 """
